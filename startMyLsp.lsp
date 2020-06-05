@@ -1,0 +1,13 @@
+(defun c:startMyLsp()
+
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/drawThroughPoints.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/ductAll.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/ductOpening.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/ductRoute.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/getRoute.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/myCommands.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/myWallSketcher.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/myRouteSketcher.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/setLayers.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/test.lsp")
+)
