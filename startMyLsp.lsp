@@ -9,5 +9,6 @@
 	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/myWallSketcher.lsp")
 	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/myRouteSketcher.lsp")
 	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/setLayers.lsp")
+	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/changeLayerFunctions.lsp")
 	(load "C:/Users/z0041nhm/gitrepos/AutoLISP/test.lsp")
 )

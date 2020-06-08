@@ -83,7 +83,7 @@
 
 	(princ "\n---\nObjects to change: ")(princ objectsToChange)	
 	
-	(changeLayersOfObjectList objectsToChange "L00_WALLS")
+	(changeLayersOfObjectList objectsToChange "L00_CEILING")
 	
 	; (setq newLayer "L00_WALLS")
 	; (foreach i objectsToChange
@@ -109,40 +109,40 @@
 	
 )
 
-(defun changeLayersOfObjectList(objectListToChange newLayer)
+; (defun changeLayersOfObjectList(objectListToChange newLayer)
 
-	(princ "\n---\nChange layers()...")
-	(setq objectList objectListToChange)
+	; (princ "\n---\nChange layers()...")
+	; (setq objectList objectListToChange)
 	
-	(foreach i objectList
-		(changeLayer i newLayer)
-	)
+	; (foreach i objectList
+		; (changeLayerOfObject i newLayer)
+	; )
 
-)
+; )
 
-(defun changeLayerOfObject(object newLayer)
+; (defun changeLayerOfObject(object newLayer)
 
-	(princ "\n---\nCange layer()...")
-	(setq objectData (entget object))
+	; (princ "\n---\nCange layer()...")
+	; (setq objectData (entget object))
 
 	; (princ "\n---\nObject data to change: ") (princ objectData)
 	; (princ "\n---\nNew Layer: ") (princ newLayer)
 
-	(setq objectData
-		(subst
-			(cons 8 newLayer)
-			(assoc 8 objectData)
-			objectData
-		)
-	)
+	; (setq objectData
+		; (subst
+			; (cons 8 newLayer)
+			; (assoc 8 objectData)
+			; objectData
+		; )
+	; )
 	
-	(entmod objectData)
+	; (entmod objectData)
 
 	; (princ "\n---\nObject data after changes: ") (princ objectData)
 
-	(terpri)
+	; (terpri)
 
-)
+; )
 
 (defun c:test-grread()
 
