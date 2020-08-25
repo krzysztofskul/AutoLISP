@@ -43,6 +43,7 @@
 	(princ "\n---\nObject data to change: ") (princ objectData)
 	(princ "\n---\nNew Layer: ") (princ newLayer)
 
+	; set layer
 	(setq objectData
 		(subst
 			(cons 8 newLayer)
@@ -51,9 +52,29 @@
 		)
 	)
 	
+	;set color by layer (https://www.afralisp.net/autolisp/tutorials/colours-and-linetypes.php)
+	; todo ....
+	;dxf code 62 to nil?
+	; (setq objectData
+		; (append
+			; objectData
+			; (list
+				; (cons 62 5
+				; )
+			; )
+		; )
+	; )
+	; (entupd (car (entsel)))
+	; (entmod objectData)
+
+	
+	;set linetype by layer
+	; to do ...
+	;dxf code 6 to nil?
+	
 	(entmod objectData)
 
-	; (princ "\n---\nObject data after changes: ") (princ objectData)
+	(princ "\n---\nObject data after changes: ") (princ objectData)
 
 	(terpri)
 

@@ -109,3 +109,96 @@
 	
 
 )
+
+(defun c:dimSMNSH()
+
+  (setq dimType
+	 (getstring "CHOOSE OPTION: [G]eneral dim. / [P]roject dim. / [B]asement concrete / [F]loor electr. / [C]eiling electr. / [W]all electr. (or cm/cma/cms or wm/wma) : ")
+  )
+  (princ "\ndimType = : ")(princ dimType)
+  
+  ; save old layer
+  (setq oldlayer (getvar "CLAYER"))
+
+  ; set dim style and dim layer
+  (cond
+    	(
+	 	(or (= dimType "g") (= dimType "G"))
+	 	(setq dimStyle "000-SMNSH--DIM-GENERAL")
+	 	(setq dimLayer "L08_DIMENSIONING")
+	 )
+    	(
+	 	(or (= dimType "p") (= dimType "P"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_PROJECT")
+	 )
+	 (
+	 	(or (= dimType "b") (= dimType "B"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_FLOOR_MOUNTING_CONCRETE")
+	 )
+	 (
+	 	(or (= dimType "f") (= dimType "F"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_FLOOR_MOUNTING_ELECT")
+	 )
+	 (
+	 	(or (= dimType "c") (= dimType "C"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_ELECT")
+	 )
+	 (
+	 	(or (= dimType "cm") (= dimType "CM"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING")
+	 )
+	 (
+	 	(or (= dimType "cma") (= dimType "CMA"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_ADDED")
+	 )
+	 (
+	 	(or (= dimType "cms") (= dimType "CMS"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE")
+	 )
+	 (
+	 	(or (= dimType "w") (= dimType "W"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_WALL_MOUNTING_ELECT")
+	 )
+	 (
+	 	(or (= dimType "wma") (= dimType "WMA"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_WALL_MOUNTING_ADDED")
+	 )
+	(t
+	 	(princ "\nYou didnt choose corrct option. Try again!")
+	   	(setvar "CLAYER" oldlayer)
+	 	(quit)
+	 )
+   );end cond
+
+  ; if layer exist -> draw dimension
+  (if (tblsearch "LAYER" dimLayer)
+    (progn
+      (setvar "CLAYER" dimLayer)
+      (command "DIMSTYLE" "r" dimStyle)
+      (princ "\nPick dim points ...")
+      (command "DIMLINEAR")
+      ; wait with command for user action:
+		(while 
+			(= (getvar "cmdactive") 1)
+			(command pause)
+		);endwhile
+    ); end progn
+    ; if layer doesnt exist
+    (princ "NO LAYER FOUND!")     
+   );end if
+  
+
+  ; resotre old layer
+  (setvar "CLAYER" oldlayer)
+  
+ 
+ );end defun dimGeneral()

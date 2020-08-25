@@ -23,6 +23,24 @@
 	 "p" "p" "L90_TEXT_ROOM_SYMBOL"
 	 ""
 	 );command
+  	(command "_layer" "m" "L90_TEXT_CEILING_MOUNTING"
+	 "c" "t" "0,191,255" "L90_TEXT_CEILING_MOUNTING"
+	 "l" "CONTINUOUS" "L90_TEXT_CEILING_MOUNTING"
+	 "p" "p" "L90_TEXT_CEILING_MOUNTING"
+	 ""
+	 );command
+    	(command "_layer" "m" "L90_TEXT_WALL_MOUNTING"
+	 "c" "t" "255,127,0" "L90_TEXT_WALL_MOUNTING"
+	 "l" "CONTINUOUS" "L90_TEXT_WALL_MOUNTING"
+	 "p" "p" "L90_TEXT_WALL_MOUNTING"
+	 ""
+	 );command
+      	(command "_layer" "m" "L90_TEXT_FLOOR_MOUNTING"
+	 "c" "t" "255,0,255" "L90_TEXT_FLOOR_MOUNTING"
+	 "l" "CONTINUOUS" "L90_TEXT_FLOOR_MOUNTING"
+	 "p" "p" "L90_TEXT_FLOOR_MOUNTING"
+	 ""
+	 );command
 	(command "_layer" "m" "L90_TEXT_ROOM_NAME"
 	 "c" "t" "102,102,102" "L90_TEXT_ROOM_NAME"
 	 "l" "CONTINUOUS" "L90_TEXT_ROOM_NAME"
@@ -87,4 +105,8 @@
 		 "s" "0"
 		 ""
 	 );command
+
+  	; set new group filter for layer
+	(command "_.LAYER" "_filter" "_New" "_Group" "All" "*" "HSCAD" "")
+  
   );end defun
