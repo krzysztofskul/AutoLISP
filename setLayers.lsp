@@ -1,4 +1,8 @@
 (defun c:setMyNewLayers()
+
+	;;;
+	; set new layers
+	;;;
 	(command "_layer" "m" "L08_DIM_CEILING_MOUNTING"
 	 "c" "t" "0,191,255" "L08_DIM_CEILING_MOUNTING"
 	 "l" "CONTINUOUS" "L08_DIM_CEILING_MOUNTING"
@@ -101,12 +105,29 @@
 		 "p" "p" "L99_TRANSPORT"
 		 ""
 	 );command
+	 	(command "_layer" "m" "L00_TODEL-NOPLOT"
+		 "c" "t" "128,128,128" "L00_TODEL-NOPLOT"
+		 "l" "CONTINUOUS" "L00_TODEL-NOPLOT"
+		 "p" "n" "L00_TODEL-NOPLOT"
+		 ""
+	 );command
+	 
+	;;;
+	; update existing layers
+	;;;
+	(c:updateExistingLayers)
+	 
+	;;;
+	; set active layer
+	;;;
   	(command "_layer"
 		 "s" "0"
 		 ""
 	 );command
 
+	;;;
   	; set new group filter for layer
+	;;;
 	(command "_.LAYER" "_filter" "_New" "_Group" "All" "*" "HSCAD" "")
   
   );end defun

@@ -11,5 +11,8 @@
 	(load "D:/KSKLN/gitrepos/AutoLISP/setLayers.lsp")
 	(load "D:/KSKLN/gitrepos/AutoLISP/changeLayerFunctions.lsp")
 	(load "D:/KSKLN/gitrepos/AutoLISP/myRectangle.lsp")
+	(load "D:/KSKLN/gitrepos/AutoLISP/myRectangleOnEllipse.lsp")
+	(load "D:/KSKLN/gitrepos/AutoLISP/updateExistingLayers.lsp")
+	(load "D:/KSKLN/gitrepos/AutoLISP/blockOperations.lsp")
 	(load "D:/KSKLN/gitrepos/AutoLISP/test.lsp")
 )
