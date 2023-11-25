@@ -12,6 +12,8 @@
 		"L22_WALL_MOUNTING_ADDED" 
 		"C" "T" "165,41,0" 
 		"L90_TEXT_WALL_MOUNTING_ADDED"
+		"C" "T" "255,255,255" 
+		"L00_WALLS"
 		""
 	)
 	

@@ -145,7 +145,7 @@
 
 
 	;ask user for change layer and hatch
-	(setq layerChoose (getstring "\nChoose type for duct 'W'alls / electrical 'F'loor / electrical 'C'eiling (or ENTER for NEW WALLS): "))
+	(setq layerChoose (getstring "\nChoose type for duct 'W'alls / electrical 'F'loor / 'D'emolition / electrical 'C'eiling (or ENTER for NEW WALLS): "))
 	(print "layerChosen: ") (princ layerChoose) (terpri) 	
 	(cond 
 		((or (= layerChoose "w") (= layerChoose "W")) 
@@ -160,6 +160,10 @@
 		((or (= layerChoose "c") (= layerChoose "C")) 
 			(setq layerToDraw "L21_CEILING_MOUNTING_ELECT")
 			(setq hatchToDraw "ANSI31")
+		)
+		((or (= layerChoose "d") (= layerChoose "D")) 
+			(setq layerToDraw "L05_DEMOLITION")
+			(setq hatchToDraw "DOTS")
 		)
 	)
 	
@@ -178,7 +182,7 @@
 	
 	
 	(command 
-		"-hatch" "p" hatchToDraw "1" "0" "an" "y" "la" layerToDraw "co" 8 "" "s" (ssget "L") "" ""
+		"-hatch" "p" hatchToDraw "1" "0" "an" "y" "a" "a" "y" "" "la" layerToDraw "co" 8 "" "s" (ssget "L") "" ""
 	)
 
 )
