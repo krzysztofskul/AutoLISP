@@ -5,21 +5,21 @@
 	;;;
 	
 	(command "_layer" "m" "-INFO--ROOM"
-	 "c" "t" "102,102,102" "-INFO--ROOM"
+	 "c" "8" "-INFO--ROOM"
 	 "l" "CONTINUOUS" "-INFO--ROOM"
 	 "p" "p" "-INFO--ROOM"
 	 ""
 	 );command
 	 
 	(command "_layer" "m" "-INFO--EQUIPMENT"
-	 "c" "t" "102,102,102" "-INFO--EQUIPMENT"
+	 "c" "8" "-INFO--EQUIPMENT"
 	 "l" "CONTINUOUS" "-INFO--EQUIPMENT"
 	 "p" "p" "-INFO--EQUIPMENT"
 	 ""
 	 );command
 	 
 	(command "_layer" "m" "-INFO--DOOR&WINDOWS"
-	 "c" "t" "102,102,102" "-INFO--DOOR&WINDOWS"
+	 "c" "8" "-INFO--DOOR&WINDOWS"
 	 "l" "CONTINUOUS" "-INFO--DOOR&WINDOWS"
 	 "p" "p" "-INFO--DOOR&WINDOWS"
 	 ""
@@ -89,7 +89,7 @@
 	 );command
 	 
 	(command "_layer" "m" "L00_WALLS"
-		 "c" "white" "L00_WALLS"
+		 "c" "7" "L00_WALLS"
 		 "l" "CONTINUOUS" "L00_WALLS"
 		 "p" "p" "L00_WALLS"
 		 ""	
@@ -186,10 +186,10 @@
 	 ""
 	 );command
 	 
-	(command "_layer" "m" "L08_TEXT_SHIELDING"
-	 "c" "73" "L08_TEXT_SHIELDING"
-	 "l" "CONTINUOUS" "L08_TEXT_SHIELDING"
-	 "p" "p" "L08_TEXT_SHIELDING"
+	(command "_layer" "m" "L90_TEXT_SHIELDING"
+	 "c" "73" "L90_TEXT_SHIELDING"
+	 "l" "CONTINUOUS" "L90_TEXT_SHIELDING"
+	 "p" "p" "L90_TEXT_SHIELDING"
 	 ""
 	 );command
 	 
