@@ -1,199 +1,145 @@
-(defun c:test-entity()
-	
-	(command "line" '(0 0) '(100 50) "" 
-	)
+(defun c:test_myClearBlock ( / xBlockName)
 
-	(setq lineLast (entlast)
-	)
+(princ "\ntest...myClearBlock")
 
-	(setq lineSel (entsel)
-	)
-	
-	(setq lineSelName (car (entsel))
-	)
+(setq xEntityData (getEntityData))
+(setq xBlockName (getBlockNameByEntityData xEntityData))
+(princ "\nReceived block name: ")(princ xBlockName)
 
-	(princ "\nLine last entlast: ")
-	(princ lineLast)
+(princ)
+);defun
 
-	(princ "\nLine sel entsel: ")
-	(princ lineSel)
-	
-	(princ "\nLine sel name car entsel: ")
-	(princ lineSelName)
+(defun getEntityData( / xObjSel xEntityData)
 
-	
-	(princ "\nLine data from entlast: ")
-	(princ lineLast)
-	
-	
-	(setq lineData (entget lineLast)
-	)
-	(princ "\nLine data: ")
-	(princ lineData)
-	
-	(setq 
-		lineData
-		(subst (cons 8 "L00_WALLS") (assoc 8 lineData) lineData
-		)
+;get selection set of the block
+(setq xObjSel (entsel "\nSelect block.."))
+;get entity of the block by entity name
+(setq xEntityData (entget (car xObjSel)))
+
+return xEntityData
+
+);defun
+
+
+(defun getBlockNameByEntityData (xEntityData / xEntityData obj blockName)
+
+(vl-load-com)
+(setq acadDocument (vla-get-activedocument (vlax-get-acad-object)))
+
+;get blok name
+(if 
+
+	;cond
+	(/= nil (cdr(assoc 2 xEntityData)))
+
+	(progn ;if
+		(setq blockName (cdr(assoc 2 xEntityData)))
+		(princ "\nBlock name: ")
+		(princ blockName)
+	);progn
+);if
+
+
+		(progn ;else
+			;get original block name
+			(setq obj (vlax-ename->vla-object (car (entsel "\nSelect again.."))))
+			(setq originalBlockName (vla-get-effectivename obj))
+			(princ "\nBlock name original: ")
+			(princ originalBlockName)
+		);progn
 		
-	)
-	
-	(entmod lineData)
-	
-	(princ "\nLine data after changes: ")
-	(princ lineData)	
-	(terpri)
-	
-);end
+ 
+  
+return blockName
 
 
-(defun c:test-functionNewLayer()
+);end defun
 
-	;;; LINE TO CHANGE
-	(command "line" '(0 0) '(-100 -50) ""
-	)
-	;(changeLayer line "L00_WALLS")
-	
-	; (setq line (entlast)
-	; )
-	; (setq lineData (entget line)
-	; )
-	;;; END
-	
-	;;; LIST OF PLINES TO CHANGE
-	;(setq objectsToChange (list nil))
-	(setq objectsToChange (list))
-	
-	
-	(command "pline" '(300 0) '(300 -50) '(350 -100) ""
-	)
-	(setq object (entlast))
-	(princ "\n---\nObject: ") (princ object)
-	(setq objectsToChange (append objectsToChange (list object)))
-	;(setq objectsToChange (cdr objectsToChange))
-	(command "pline" '(400 0) '(400 -50) '(450 -100) ""
-	)
-	(setq object (entlast))
-	(setq objectsToChange (append objectsToChange (list object)))
-	(command "pline" '(500 0) '(500 -50) '(550 -100) ""
-	)
-	(setq object (entlast))
-	(setq objectsToChange (append objectsToChange (list object)))
-	
 
-	(princ "\n---\nObjects to change: ")(princ objectsToChange)	
-	
-	(changeLayersOfObjectList objectsToChange "L00_CEILING")
-	
-	; (setq newLayer "L00_WALLS")
-	; (foreach i objectsToChange
-		; (setq objectData (entget i))
+;get all blocks and read data about it
+(defun c:test_ssgetBlocks()
 
-		; (princ "\n---\nObject data to change: ") (princ objectData)
-		; (princ "\n---\nNew Layer: ") (princ newLayer)
+	;get all blocks
+	;(ssget "_X" '((0 . "INSERT")))
+	
+    (if (setq s (ssget '((0 . "INSERT"))))
+        (progn
+            (setq i 0
+                  n (sslength s)
+            )
+			(princ n)
+            (while (< i n)
+			
+				;TODO
+				; MAKE BLOCK EXPLDABLE
+				;;(setq blockName (cdr(assoc 2 ed)))
+				(setq obj (vlax-ename->vla-object (car (entsel "\nSelect again.."))))
+				(setq blockName (vla-get-effectivename obj))
+				(princ "\nBlock name original: ")
+				(princ blockName)
+				(princ "\nTrying to explode block ") (princ blockName)
+				(_explodable blockName)
+				
+				;TODO
+				;; change block to scale uniformly to explode block
+				;explmode to 1 ?
+				(command "explmode" 1)
+			
+				;TODO
+				;InsUnits (RO) = "Centimeters"
+				;https://www.cadtutor.net/forum/topic/8050-help-for-vla-functions-where-to-find/
+			
+				(setq sstmp (ssadd))
+				(ssadd (ssname s i) sstmp)
+				(print sstmp)
+				(command "_explode" sstmp)
+			
+                (setq en (ssname s i) ;e=entity name
+					ed (entget en) ; ed=entity data
+					i (1+ i)
+                )
+				
 
-		; (setq objectData
-			; (subst
-				; (cons 8 newLayer)
-				; (assoc 8 objectData)
-				; objectData
-			; )
-		; )
-		; (entmod objectData)
-	; )
+			
+				; (print s)
+                ; (print (ssname s i))
+				; (print e)
+				; (print x)
+				; (setq blockName (cdr(assoc 2 ed)))
+				; (print blockName)
+            )
+        )
+    )
+    (princ)
 
-	
-	;;;END
-	
-	(terpri)
-	
+		
+);defun
+
+(defun _explodable (name / e)
+(vl-load-com)
+  (and (setq e (tblobjname "block" "idt_flagnote"))
+       (setq e (vla-item (vla-get-blocks (vla-get-activedocument (vlax-get-acad-object))) name))
+       (vla-put-Explodable e :vlax-true)
+	   (princ (vla-get-Explodable e))
+	   
+  )
 )
 
-; (defun changeLayersOfObjectList(objectListToChange newLayer)
+(vl-load-com)
 
-	; (princ "\n---\nChange layers()...")
-	; (setq objectList objectListToChange)
+(defun c:test_BlockScaling() 
+	(vl-load-com)
+	(setq ent (car (entsel)))
+	;; get the block definition ename
+	(setq block (cdr (assoc 330 (entget (tblobjname "block" (cdr (assoc 2 (entget ent))))))))
+	(princ "\nblock name: ")(princ block)
+	;; convert the ename into a vla-object
+	(setq block (vlax-ename->vla-object block))
 	
-	; (foreach i objectList
-		; (changeLayerOfObject i newLayer)
-	; )
-
-; )
-
-; (defun changeLayerOfObject(object newLayer)
-
-	; (princ "\n---\nCange layer()...")
-	; (setq objectData (entget object))
-
-	; (princ "\n---\nObject data to change: ") (princ objectData)
-	; (princ "\n---\nNew Layer: ") (princ newLayer)
-
-	; (setq objectData
-		; (subst
-			; (cons 8 newLayer)
-			; (assoc 8 objectData)
-			; objectData
-		; )
-	; )
+	(princ "\nBlock scaling: ")
+	(princ (vla-get-BlockScaling block))
 	
-	; (entmod objectData)
-
-	; (princ "\n---\nObject data after changes: ") (princ objectData)
-
-	; (terpri)
-
-; )
-
-(defun c:test-grread()
-
-	(setq x (list 0,0)
-	)
-	(command "line" (list 0 0) (list 100 0) "")
-	; (princ (grread t 1)
-	; )
-	
-	; (command "._pline")
-	; (while (= 1 (getvar "cmdactive")) ;wait until _pline command finishes
-		; (command pause)
-	; )
-		;offset spine
-	; (command "_offset" pause (ssget "L"))
-	; (while 
-		; (= 1 (getvar "cmdactive"))
-		; (command pause)
-	; )
-	
-	; (setq pt2 (list nil))
-	(setq x1 (getpoint "get x1: "))
-	(setq x2 x1)
-	(princ "x1:") (princ x1)
-	(princ "x2:") (princ x2)
-	(while 
-		(=
-			; < 
-			; (car
-				; (cadr
-					; (setq x 
-						; (grread t 1
-						; )
-					; )
-				; )
-			; )
-			; 100
-			(setq x2 (getpoint "\nget x2:"))
-			x1
-		)	
-		(command "erase" (entlast) "")
-		; (princ (cdr (grread t 1)))
-		(command "pline"  
-			(list 0 0) 
-			(car (cdr (grread t 1))
-			)
-			""
-		)
-		;(redraw (entlast))
-
-	)
-
-	(terpri)
+	;; set the BlockScaling of the block definition
+	;(vla-put-BlockScaling block acUniform)
+	;(vla-put-BlockScaling block acAny)
 )
