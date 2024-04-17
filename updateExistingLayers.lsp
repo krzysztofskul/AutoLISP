@@ -5,16 +5,18 @@
 	(command "_layer" "L" "HIDDEN2" "L05_DEMOLITION" ""
 	)
 	
-	(command "_layer" 
-		"C" "T" "165,41,0" 
-		"L08_DIM_WALL_MOUNTING_ADDED" 
-		"C" "T" "165,41,0" 
-		"L22_WALL_MOUNTING_ADDED" 
-		"C" "T" "165,41,0" 
+	(command "-layer" 
+		"C" "22" 
+		"L08_DIM_WALL_MOUNTING_ADDED"
+		
+		"C" "22" 
+		"L22_WALL_MOUNTING_ADDED"
+		
+		"C" "22" 
 		"L90_TEXT_WALL_MOUNTING_ADDED"
-		"C" "T" "255,255,255" 
-		"L00_WALLS"
-		""
+		
+		"C" "10" 
+		"L09_MAGNETFIELDS_05mT" ""
 	)
 	
 ); endfun
