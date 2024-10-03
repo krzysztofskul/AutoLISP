@@ -1,27 +1,42 @@
 (defun layerTransparency (selectedLayer newTransparency)
   
-  (if (= selectedLayer nil)
-    (progn
+  (if (= selectedLayer nil) ; if no layer selected
+    ;select layer to set new transaprency
+	(progn
       	(setq xSelectedEntity (entsel "\nSelect object: ")); return entity name and coordinates
 	(setq xEntityData (entget (car xSelectedEntity)));return listed data about entity
   	(setq selectedLayer (cdr (assoc 8 xEntityData)))
       );progn  
   );if
 
-  (if (= newTransparency nil)
-    (setq newTransparency (getint "\nNew transparency:"))	
-    );if
+	(if 
+		(/= selectedLayer "0")
+			(progn
+				;write new transprency if it is not already set 
+				(if (= newTransparency nil)
+					(setq newTransparency (getint "\nNew transparency:"))	
+				);if
 
-  (command "vplayer" "tr" newTransparency selectedLayer "c" "")		
+				;set new transprency for selected layer
+				(command "vplayer" "tr" newTransparency selectedLayer "c" "")		
+			  );progn
+		  
+			;if selected layer is 0
+			(progn
+				(princ "Not applicable for layer 0!")
+		);progn
+	);if
+
 
   );end defun
 
+;This method allows user to choose layer and set new transparency in active viewport
 (defun c:setLayerTransparency (/)
 	(layerTransparency nil nil)
 );defun
 
 ;sets the transparency value 90 in actual viewport for hscad equipment layers
-(defun c:setHscadEqdVpTransparency90 (/)
+(defun c:setLayerTransparency90HscadInVp (/)
 
   (setq hscadEqLayers '(
 	"L10_FLOOR_MOUNTED"
