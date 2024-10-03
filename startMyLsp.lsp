@@ -14,6 +14,8 @@
 	(load "D:/KSKLN/IT/AutoLISP/myRectangleOnEllipse.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/updateExistingLayers.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/blockOperations.lsp")
+	(load "D:/KSKLN/IT/AutoLISP/layerTransparency.lsp")
+	
 	(load "D:/KSKLN/IT/AutoLISP/test.lsp")
 	
 	(c:toGrayHSCAD)
