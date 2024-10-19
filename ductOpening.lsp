@@ -1,15 +1,15 @@
 (DEFUN C:DUCT-OPENING()
 
-  ; DRAW RECTANGLE / RYSUJ PROSTOKAT
+  ; DRAW RECTANGLE / RYSUJ PROSTOKĄT
   (SETQ CENTER (GETPOINT "\nWskaz punkt (Pick point):")
 	 )
   (print "CENTER POINT: ") (princ center)
 
-  (SETQ WIDTH (GETREAL "\nPodaj szerokosc (Write width) [FORMAT 0.0]:")
+  (SETQ WIDTH (GETREAL "\nWpisz szerokość:")
 	)
   (print "WIDTH: ") (princ width)
 
-  (SETQ HEIGHT (GETREAL "\nPodaj dlugosc (Write length) [FORMAT 0.0]:")
+  (SETQ HEIGHT (GETREAL "\nWpisz długość:")
 	)
   (print "LENGTH: ") (princ height)
   
@@ -36,17 +36,16 @@
 	
   ; SET LAYER / PRZYPISZ DO WARSTWY
 
-  (setq layerToUse (getstring "\nUse HSCAD FLOOR MOUNT. ELECT. LAYER? [y/n]: "))
+  ;(setq layerToUse (getstring "\nUse HSCAD FLOOR MOUNT. ELECT. LAYER? [y/n]: "))
   
-  (if (or (= layerToUse "y") (= layerToUse "Y"))
+  ;(if (or (= layerToUse "y") (= layerToUse "Y"))
 	(progn
 		(setq ssRectangle (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssRectangle)  ssRectangle) )
 		(entmod ssRectangle)
 		(setq ssHatch (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssHatch)  ssHatch) )
 		(entmod ssHatch)
 	)
-  )
+  ;)
 
-  
   (terpri)
 ) ;END DEFUN

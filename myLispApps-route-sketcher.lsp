@@ -1,4 +1,15 @@
-(defun c:myRouteSketcher()
+(defun c:myLispApp-route-sketcher( / *error*)
+
+	;error function
+	(defun *error* (msg)
+		(princ "error: ")
+		(princ msg)
+		(c:myOsmode)
+		(c:l0)
+		(princ)
+	);defun error
+
+	(command "osmode" "0")
 
   (setq FstPnt nil)
   (setq NxtPnt nil)
@@ -26,7 +37,7 @@
 
     ; if first point exist, get next point`
     (if (/= FstPnt nil)
-    	(setq NxtPnt (getpoint FstPnt "\nSelect next point: "))
+    	(setq NxtPnt (getpoint FstPnt "\nSelect next point [ENTER - finish route]: "))
     )
 
     (if (/= NxtPnt nil)
@@ -60,7 +71,7 @@
   
   ;(print "so pointsList to send: ") (princ pointsList) ;pointsList ready to send to drawThroughPoints function
   
-  (c:drawThroughPoints pointsList)
+  (drawThroughPoints pointsList)
 
   (command "osmode" "0")
   
@@ -127,7 +138,7 @@
     ""
     )
 	
-	(c:routeType)
+	(routeType)
 
   	(command
 		"-layer" "s" "0" ""
@@ -137,7 +148,7 @@
   
 );end defun
 
-(defun c:routeType()
+(defun routeType()
 
 	; set defult layer and hatch
 	(setq layerToDraw "L00_WALLS_NEW")
@@ -186,3 +197,17 @@
 	)
 
 )
+
+(defun drawThroughPoints(pointsList / n)
+  
+  (print "pointsList received: ") (princ pointsList) ;test received arguments if exists
+  (terpri)
+
+  ;draw lines through points
+	  (command "pline")
+	  (foreach n pointsList
+	    (command n)
+	    );;end foreach
+	  (command "")
+  
+  );end defun

@@ -5,7 +5,7 @@
    (tblsearch "LAYER" "0")
     );setq
 	
-  (command
+  (command-s
 	"-layer" "s" "0" ""
     );end command
 )
@@ -77,10 +77,10 @@
 )
 
 (defun c:myOsmode()
-  (command "osmode" "3815"
-   )myrev
+  (command-s "osmode" "3815"
+   )
   );end defun
-  
+ 
  
 (defun c:myRevCloud()
 
@@ -110,7 +110,16 @@
 
 )
 
-(defun c:dimSMNSH()
+(defun c:dimSMNSH( / *error*)
+
+	;error function
+	(defun *error* (msg)
+		(princ "error: ")
+		(princ msg)
+		(c:myOsmode)
+		(c:l0)
+		(princ)
+	);defun error
 
   (setq dimType
 	 (getstring "CHOOSE OPTION: [G]eneral dim. / [P]roject dim. / [B]asement concrete / [F]loor electr. / [C]eiling electr. / [W]all electr. (or cm/cma/cms or wm/wma) : ")
