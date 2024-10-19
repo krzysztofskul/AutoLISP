@@ -18,10 +18,10 @@
 
 ;This function calculate start point from insertionType and calls function drawing rectangle from insertion point
 (defun myLispAppsCalc (insertionType insertionPoint width height / )
-	
-	;(princ "\nInsertion type: ")(princ insertionType)
-	
-	;(setq startPointLeftTop)
+
+	;TODO
+	;change if to case
+	;add error handlers for esc key and for other key pressed
 
 	(if 
 		(= (strcase insertionType T) "lt")
@@ -127,8 +127,6 @@
 			);setq
 		);progn
 	);if
-	;TODO
-	;specify other ifs - for other insertion points needed to draw rectangle
 	
 	(princ "\Start point left: ")(princ startPointLeftTop)
 	(myLispApps-draw-rectangle startPointLeftTop width height)
