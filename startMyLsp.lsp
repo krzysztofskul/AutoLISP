@@ -2,6 +2,7 @@
 
 	(load "D:/KSKLN/IT/AutoLISP/ductAll.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/myLispApps-route-sketcher.lsp")
+	(load "D:/KSKLN/IT/AutoLISP/myLispApps-myrectangle.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/ductOpening.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/ductRoute.lsp")
 	(load "D:/KSKLN/IT/AutoLISP/getRoute.lsp")

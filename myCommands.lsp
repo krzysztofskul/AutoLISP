@@ -8,7 +8,10 @@
   (command-s
 	"-layer" "s" "0" ""
     );end command
-)
+
+	(command-s "_.LAYER" "_filter" "_Set" "HSCAD" "")
+	
+);defun
 
 
 
