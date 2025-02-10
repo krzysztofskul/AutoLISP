@@ -1,3 +1,4 @@
+;This function creates layers to my prefferd confugiration
 (defun c:myLispApp-set-my-new-layers()
 
 	;;;
@@ -217,10 +218,18 @@
   	; set new group filter for layer
 	;;;
 	(command-s "_.LAYER" "_filter" "_New" "_Group" "All" "*" "HSCAD" "")
-  
+ 
+ 	;;;
+  	; set new group filter for xrefs
+	;;;
+	(command "_.LAYER" "_filter" "_New" "_Group" "" "" "_XREF" "s" "HSCAD" "x" "")
+ 
+	(myLispApp-set-my-new-layerstates)
+ 
  );end defun
 
 
+;This function upates created layers to my prefferd style
 (defun updateExistingLayers() 
 
 	;(alert "test updateExistingLayers() function") ; ok
@@ -246,57 +255,40 @@
 
 
 
-(defun c:myLispApp-duct-opening()
 
-  ; DRAW RECTANGLE / RYSUJ PROSTOKĄT
-  (SETQ CENTER (GETPOINT "\nWskaż punkt:")
-	 )
-  (print "CENTER POINT: ") (princ center)
 
-  (SETQ WIDTH (GETREAL "\nWpisz szerokość:")
-	)
-  (print "WIDTH: ") (princ width)
 
-  (SETQ HEIGHT (GETREAL "\nWpisz długość:")
-	)
-  (print "LENGTH: ") (princ height)
-  
-  (SETQ CENTERX (CAR CENTER))
-  (print "CENTER X COORD.: ") (princ CENTERX)
-  (SETQ CENTERY (CADR CENTER))
-  (print "CENTER Y COORD.: ") (princ CENTERY)
+(defun myLispApp-set-my-new-layerstates (/)
+	(command "layer" "state" "save" "000-SMNSH-CLR-0" "" "" "")
+	(command "layer" "state" "save" "000-SMNSH-CLR-1" "" "" "")
+	(command "layer" "state" "save" "000-SMNSH-CLR-2" "" "" "")
+);
 
-  (SETQ POINT1X (- CENTERX (* WIDTH 0.5)))
-  (SETQ POINT1Y (- CENTERY (* HEIGHT 0.5)))
-  (SETQ POINT1 (LIST POINT1X POINT1Y))
-  
-  (SETQ POINT2X (+ CENTERX (* WIDTH 0.5)))
-  (SETQ POINT2Y (+ CENTERY (* HEIGHT 0.5)))
-  (SETQ POINT2 (LIST POINT2X POINT2Y))
-  
-  (command-s "_RECTANGLE" POINT1 POINT2
-	   )
-	(setq ssRectangle (entget (entlast)))
-  
-  ; HATCH/KRESKUJ
-  (command-s "_-HATCH" "_P" "ANSI37" "2" "0" "_AN" "N" "_S" POINT2 "" "")
-	(setq ssHatch (entget (entlast)))
+;Creats opening for floor duct OLD VERSION
+(defun c:myLispApp-duct-floor-opening ()
+
+	;Draw rectangle
+	(c:myLispApp-draw-rectangle)
 	
-  ; SET LAYER / PRZYPISZ DO WARSTWY
+	;Get last drawn selection set
+	(setq ssRectangle (entget (entlast)))
+	(setq rectangle (ssget "L"))
+	
+	;Set layer
+	(setq ssRectangle (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssRectangle)  ssRectangle) )
+	(entmod ssRectangle)
+	
+	;Hatch (inside this function)
+	; (command "_-HATCH" "_P" "ANSI37" "2" "0" "_AN" "N" "_S" POINT2 "" "")
+	; (setq ssHatch (entget (entlast)))
+	; (setq ssHatch (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssHatch)  ssHatch) )
+	; (entmod ssHatch)
+	
+	;Hatch using outise functionappl
+	;(setq rectangle (ssget "L"))
+	(myLispApp-duct-floor-hatch rectangle)
 
-  ;(setq layerToUse (getstring "\nUse HSCAD FLOOR MOUNT. ELECT. LAYER? [y/n]: "))
-  
-  ;(if (or (= layerToUse "y") (= layerToUse "Y"))
-	(progn
-		(setq ssRectangle (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssRectangle)  ssRectangle) )
-		(entmod ssRectangle)
-		(setq ssHatch (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssHatch)  ssHatch) )
-		(entmod ssHatch)
-	)
-  ;)
-
-  (terpri)
-) ;END DEFUN
+);defun
 
 
 
@@ -341,6 +333,11 @@
 	"L22_WALL_MOUNTING"
 	"L22_WALL_MOUNTING_ADDED"
 	"L22_WALL_MOUNTING_WATER"
+	"L19A_MOVEMENTS"
+	"L19B_MIN_ROOM_SIZES"
+	"L19C_SERVICE_AREAS"
+	"L19_SWIVELLING_RANGE"
+	"-INFO-"
 	);
 	);setq
 
@@ -390,6 +387,11 @@
 	)
 );end defun
 
+;Set OSMODE at 0
+(defun osmode0 ()
+	(command "osmode" "0")
+);defun
+
 ;my function which set layer to 0
 (defun l0()	;set layer 0 active fast
 
@@ -403,8 +405,8 @@
 	);end command
 )
 
-;ROUTE SKETCHER FUNCTIONALITY
-(defun c:myLispApp-route-sketcher( / *error*)
+;DUCT SKETCHER FUNCTIONALITY
+(defun c:myLispApp-duct-sketcher( / *error*)
 
 	;error function
 	(defun *error* (msg)
@@ -485,7 +487,7 @@
 
     ; if first point exist, get next point`
     (if (/= FstPnt nil)
-    	(setq NxtPnt (getpoint FstPnt "\nSelect next point [ENTER - finish route]: "))
+    	(setq NxtPnt (getpoint FstPnt "\nSelect next point [ENTER - finish duct]: "))
     )
 
     (if (/= NxtPnt nil)
@@ -587,7 +589,7 @@
     ""
     )
 	
-	(routeType)
+	(ductType)
 
   	(command
 		"-layer" "s" "0" ""
@@ -596,7 +598,7 @@
   (command "osmode" "3815")
   
 );end defun
-(defun routeType()
+(defun ductType()
 
 	; set defult layer and hatch
 	(setq layerToDraw "L00_WALLS_NEW")
@@ -658,3 +660,326 @@
 	  (command "")
   
   );end defun
+  
+
+ ;This function sets plot style for actual layout
+ (defun c:myLispApp-set-plot-style (/)
+ 
+	(setq paperSize (getstring "Specify paper size [A0] / [A1] / [A2] / [A3] / [A4P] / [A4L] or ENTER for null: ")
+	);setq
+	
+	(setq deviceName "PDF-XChange Standard")
+	
+	(setq plotStyleTable "HP-Monochrom.ctb")
+ 
+	(command "-pagesetup" deviceName paperSize "M" "L" "N" "L" "" "" "Y" plotStyleTable "Y" "N" "Y" "N")
+ 
+	(myLispApp-plot-transparency)
+ 
+ );defun
+
+;This function sets plot transparency for all layouts
+(defun c:myLispApp-plot-transparency (/ aDoc Layouts itm)
+
+	(vl-load-com)
+
+	(defun LayoutTransparency (layout OnOff / xType xData)
+	  (setq xData (vlax-make-safearray vlax-vbVariant '(0 . 1)))
+	  (setq xType (vlax-make-safearray vlax-vbInteger '(0 . 1)))
+	  (vlax-safearray-fill xData (list (vlax-make-variant "PLOTTRANSPARENCY")(vlax-make-variant OnOff)))
+	  (vlax-safearray-fill xType (list 1001 1071))
+	  (vla-setXdata layout xType xData)
+	  (entmod (entget (vlax-vla-object->ename layout) '("*")))
+	);defun
+
+	(setq	aDoc (vla-get-activedocument (vlax-get-acad-object))
+		Layouts (vla-get-layouts aDoc)
+	);setq
+	
+	(foreach
+	   itm
+		(layoutlist)
+		; or:
+		;		  (append '("Model") (layoutlist)) ; incl. Model
+		(LayoutTransparency (vla-item Layouts itm) 1) ;       1=ON 0=off
+	);foreach
+	
+	(princ)
+
+);defun
+
+;This function gets initial data to draw myrectangle
+(defun c:myLispApp-draw-rectangle (/)
+
+	(setq insertionType
+		(myLispApp-getInsertionType)
+	);	
+		
+	(setq width (getdist "\nSpecify width: " ))
+	(setq height (getdist "\nSpcify height: " ))
+	
+	(setq insertionPoint
+		(getpoint "\nSpecify insertion point for rectangle : ")
+	);
+	
+	(myLispApp-calc insertionType insertionPoint width height)
+	
+);defun
+;This function gets insertion type
+(defun myLispApp-getInsertionType (/)
+	
+	(setq insertionType
+		(getstring "\nSpecify insertion type [Center / Top / Left / Right / Bottom / LT left-top / RT right-top / LB left-bottom / RB right-bottom]: ")
+	);setq
+	
+	(cond
+		(
+		(= (strcase insertionType T) "lt")
+		(progn
+			(princ "\nInsertion point LeftTop ok!")
+		)
+		)
+		
+		(
+		(= (strcase insertionType T) "t")
+		(progn
+			(princ "\nInsertion point Top ok!")
+		)
+		)
+		
+		(
+		(= (strcase insertionType T) "rt")
+		(progn
+			(princ "\nInsertion point RightTop ok!")
+		)
+		)
+		
+		(
+		(= (strcase insertionType T) "c")
+		(progn
+			(princ "\nInsertion point Center ok!")
+		)
+		)
+		
+		(
+		(= (strcase insertionType T) "l")
+		(progn
+			(princ "\nInsertion point Left ok!")
+		)
+		)
+		
+		(
+		(= (strcase insertionType T) "r")
+		(progn
+			(princ "\nInsertion point Right ok!")
+		)
+		)
+
+		(
+		(= (strcase insertionType T) "lb")
+		(progn
+			(princ "\nInsertion point LeftBottom ok!")
+		)
+		)
+
+		(
+		(= (strcase insertionType T) "b")
+		(progn
+			(princ "\nInsertion point Bottom ok!")
+		)
+		)
+
+		(
+		(= (strcase insertionType T) "rb")
+		(progn
+			(princ "\nInsertion point RightBottom ok!")
+		)
+		)
+		
+		(t 
+			(princ "\n*ERROR* : wrong insertion point!")
+			(myLispApp-getInsertionPoint)
+		)
+		);cond
+		
+	return insertionType
+
+);
+
+;This function calculate start point from insertionType and calls function drawing rectangle from insertion point
+(defun myLispApp-calc (insertionType insertionPoint width height / )
+
+	;TODO
+	;change if to case
+	;add error handlers for esc key and for other key pressed
+
+	(cond
+		(
+		(= (strcase insertionType T) "lt")
+		(setq startPointLeftTop insertionPoint)
+		)
+		
+		(
+		(= (strcase insertionType T) "t")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) (/ width 2))
+					(+ (float (cadr insertionPoint)))
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+		
+		(
+		(= (strcase insertionType T) "rt")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) width)
+					(+ (float (cadr insertionPoint)))
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+		
+		(
+		(= (strcase insertionType T) "c")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) (/ width 2))
+					(+ (float (cadr insertionPoint)) (/ height 2))
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+		
+		(
+		(= (strcase insertionType T) "l")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(+ (float (car insertionPoint)))
+					(+ (float (cadr insertionPoint)) (/ height 2))
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+		
+		(
+		(= (strcase insertionType T) "r")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) width)
+					(+ (float (cadr insertionPoint)) (/ height 2))
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+
+		(
+		(= (strcase insertionType T) "lb")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(+ (float (car insertionPoint)) 0)
+					(+ (float (cadr insertionPoint)) height)
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+
+		(
+		(= (strcase insertionType T) "b")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) (/ width 2))
+					(+ (float (cadr insertionPoint)) height)
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+
+		(
+		(= (strcase insertionType T) "rb")
+		(progn
+			(setq startPointLeftTop 
+				(list
+					(- (float (car insertionPoint)) width)
+					(+ (float (cadr insertionPoint)) height)
+					(+ (float (caddr insertionPoint)) 0)
+				);list
+			);setq
+		);progn
+		)
+		
+		(t 
+			(princ "\n*ERROR* : wrong option!")
+		)
+		
+	);cond
+	
+	;(princ "\Start point left: ")(princ startPointLeftTop)
+	(myLispApp-draw-rectangle startPointLeftTop width height)
+
+);defun
+
+;This function draws rectangle from start point
+(defun myLispApp-draw-rectangle (startPointLeftTop width height / )
+
+	(command "osmode" "0")
+
+	(princ "\nDraw rectangle function....")
+
+	(setq endPointRightBottom
+			(list
+				(+ (float (car startPointLeftTop)) width)
+				(- (float (cadr startPointLeftTop)) height)
+				(+ (float (caddr startPointLeftTop)) 0.0)
+			);list
+	);setq
+	(princ "\nEnd point: ")(princ endPointRightBottom)
+	
+	(command "_rectangle" startPointLeftTop endPointRightBottom)
+	
+	;get last entity
+	;(setq rectangle (ssget "L"))
+	
+	(command "osmode" "3815")
+
+	;draw hatch in last entity
+	;(myLispApp-hatch rectangle)
+
+	return (setq rectangle (ssget "L"))
+
+);defun
+
+;This function creates hatch for given region. Hatch type is specified by user and choosen from my frequently used types
+(defun myLispApp-duct-floor-hatch ( region /)
+
+	(osmode0)
+	
+	(command 
+		"-hatch" "p" "ANSI37" "0.4" "0" "an" "y" "a" "a" "y" "" "la" "0" "co" 8 "" "s" region "" ""
+	)
+
+	(setq ssHatch (entget (entlast))) ;get last hatch
+	(setq ssHatch (subst  (cons  8  "L20_FLOOR_MOUNTING_ELECT") (assoc 8 ssHatch)  ssHatch) ) ;hatch
+	(entmod ssHatch) ;update data
+	
+	(myOsmode)
+	
+	(terpri)
+
+
+);
