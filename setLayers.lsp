@@ -1,7 +1,38 @@
 (defun c:setMyNewLayers()
 
 	;;;
-	; set new layers
+	;Function creates and adds new layers
+	;
+	;List with data of new layers (name color linetype)
+	(setq newLayerList 
+		(list 
+			'("L21_CEILING_MOUNTING_SUBSTRUCTURE_CRAILS" "160" "CONTINUOUS")
+			'("L21_CEILING_MOUNTING_SUBSTRUCTURE_DCS" "160" "CONTINUOUS")
+			'("L21_CEILING_MOUNTING_SUBSTRUCTURE_ADDS" "160" "CONTINUOUS")
+			'("L08_DIM_FLOOR_MOUNTING" "MAGENTA" "CONTINUOUS")
+			'("L08_DIM_MAGNETFIELDS_05mT" "10" "CONTINUOUS")
+			'("L08_DIM_COLLISION_AREA" "8" "CONTINUOUS")
+			'("L90_TEXT_MAGNETFIELDS_05mT" "10" "CONTINUOUS")
+			'("L99-50kg" "190" "CONTINUOUS")
+			'("L99-200kg" "190" "CONTINUOUS")
+			'("L99-900kg" "190" "CONTINUOUS")
+			'("L99-4500kg" "190" "CONTINUOUS")
+			
+		);list
+	);setq
+
+	;Loop which creates new layers using data from given list
+	(foreach layer newLayerList
+			(command "_layer" "m" (car layer)
+			 "c" (cadr layer) (car layer)
+			 "l" (caddr layer) (car layer)
+			 "p" "p" (car layer)
+			 ""
+			 );command
+	);foreach
+
+	;;;
+	; set new layers - old
 	;;;
 	
 	(command "_layer" "m" "-INFO--ROOM"
@@ -165,10 +196,10 @@
 		 ""
 	 );command
 	 
-	 (command "_layer" "m" "L00_TODEL-NOPLOT"
-		 "c" "t" "128,128,128" "L00_TODEL-NOPLOT"
-		 "l" "CONTINUOUS" "L00_TODEL-NOPLOT"
-		 "p" "n" "L00_TODEL-NOPLOT"
+	 (command "_layer" "m" "-INFO-TODEL-NOPLOT"
+		 "c" "t" "128,128,128" "-INFO-TODEL-NOPLOT"
+		 "l" "CONTINUOUS" "-INFO-TODEL-NOPLOT"
+		 "p" "n" "-INFO-TODEL-NOPLOT"
 		 ""
 	 );command
 
@@ -200,6 +231,13 @@
 	 ""
 	 );command
 	 
+
+	 
+	;;;
+	;set layers for substructure
+	;;;
+	(setLayersForCeilingSustructure)
+	 
 	;;;
 	; update existing layers
 	;;;
@@ -217,5 +255,56 @@
   	; set new group filter for layer
 	;;;
 	(command "_.LAYER" "_filter" "_New" "_Group" "All" "*" "HSCAD" "")
+	
+	;;;
+  	; set new group filter for xrefs
+	;;;
+	(command "_.LAYER" "_filter" "_New" "_Group" "" "" "_XREF" "s" "HSCAD" "x" "")
   
   );end defun
+  
+(defun setLayersForCeilingSustructure()
+
+	(command "_layer" "m" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "c" "160" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "l" "CONTINUOUS" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "p" "p" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 ""
+	 );command
+	
+	(command "_layer" "m" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "c" "160" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "l" "CONTINUOUS" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "p" "p" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 ""
+	 );command
+	 
+	(command "_layer" "m" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "c" "160" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "l" "CONTINUOUS" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "p" "p" "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 ""
+	 );command
+	 
+	(command "_layer" "m" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "c" "160" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "l" "CONTINUOUS" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 "p" "p" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_DCS"
+	 ""
+	 );command
+	
+	(command "_layer" "m" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "c" "160" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "l" "CONTINUOUS" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 "p" "p" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_ADDS"
+	 ""
+	 );command
+	 
+	(command "_layer" "m" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "c" "160" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "l" "CONTINUOUS" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 "p" "p" "L90_TEXT_CEILING_MOUNTING_SUBSTRUCTURE_RAILS"
+	 ""
+	 );command
+	
+)

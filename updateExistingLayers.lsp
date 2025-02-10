@@ -16,7 +16,12 @@
 		"L90_TEXT_WALL_MOUNTING_ADDED"
 		
 		"C" "10" 
-		"L09_MAGNETFIELDS_05mT" ""
+		"L09_MAGNETFIELDS_05mT"
+		
+		"C" "8"
+		"A_Annotations_NonPlot"
+		"TR" "90"
+		"A_Annotations_NonPlot" ""
 	)
 	
 ); endfun

@@ -8,7 +8,10 @@
   (command-s
 	"-layer" "s" "0" ""
     );end command
-)
+
+	(command-s "-LAYER" "filter" "set" "HSCAD" "")
+	
+);defun
 
 
 
@@ -122,7 +125,7 @@
 	);defun error
 
   (setq dimType
-	 (getstring "CHOOSE OPTION: [G]eneral dim. / [P]roject dim. / [B]asement concrete / [F]loor electr. / [C]eiling electr. / [W]all electr. (or cm/cma/cms or wm/wma) : ")
+	 (getstring "CHOOSE OPTION: [G]eneral dim. / [P]roject dim. / [B]asement concrete / [F]loor electr. / [C]eiling electr. / [W]all electr. (or cm/cma/cms or wm/wma or cdcs/crails/cadds or mr or coll) : ")
   )
   (princ "\ndimType = : ")(princ dimType)
   
@@ -181,6 +184,33 @@
 	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
 	 	(setq dimLayer "L08_DIM_WALL_MOUNTING_ADDED")
 	 )
+	
+	(
+	 	(or (= dimType "cdcs") (= dimType "CDCS"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_DCS")
+	 )
+		 (
+	 	(or (= dimType "crails") (= dimType "CRAILS"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_RAILS")
+	 )
+		 (
+	 	(or (= dimType "cadds") (= dimType "CADDS"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_CEILING_MOUNTING_SUBSTRUCTURE_ADDS")
+	 )
+		 (
+	 	(or (= dimType "mr") (= dimType "MR"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_MAGNETFIELDS_05mT")
+	 )		 
+	 (
+	 	(or (= dimType "coll") (= dimType "COLL"))
+	 	(setq dimStyle "000-SMNSH--DIM-PROJECT")
+	 	(setq dimLayer "L08_DIM_COLLISION_AREA")
+	 )
+	
 	(t
 	 	(princ "\nYou didnt choose corrct option. Try again!")
 	   	(setvar "CLAYER" oldlayer)
